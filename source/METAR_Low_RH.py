@@ -95,7 +95,7 @@ ax.add_feature(USCOUNTIES, linewidth=0.5)
 # Plots RH
 cs = ax.contourf(rtma_rh.x, rtma_rh.metpy.y, rtma_rh *100, 
            transform=rtma_rh.metpy.cartopy_crs,
-           levels=np.arange(0, 16, 1), cmap='YlOrBr', alpha=0.6)
+           levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
 
 # Plots METAR
 stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
@@ -120,4 +120,17 @@ cbar_RH = fig.colorbar(cs)
 cbar_RH.set_label(label="Relative Humidity (%)", size=12, fontweight='bold')
 
 # Saves figure
-plt.savefig("Low RH No Theta-E")
+plt.savefig(f"Weather Data/Exceptionally Low RH")
+
+
+
+
+
+
+
+
+
+
+
+
+
