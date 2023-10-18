@@ -91,18 +91,18 @@ sfc_data_mask = mpcalc.reduce_point_density(locs[:, :2], 70000)
 fig = plt.figure(figsize=(10,10))
 ax = fig.add_subplot(1, 1, 1, projection=plot_proj)
 ax.set_extent((-122, -114, 31, 39), crs=ccrs.PlateCarree())
-ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
-ax.add_feature(cfeature.STATES, linewidth=0.5)
-ax.add_feature(USCOUNTIES, linewidth=0.5)
+ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=3)
+ax.add_feature(cfeature.STATES, linewidth=0.5, zorder=3)
+ax.add_feature(USCOUNTIES, linewidth=0.5, zorder=3)
 
 # Plots RH
 cs = ax.contourf(rtma_rh.x, rtma_rh.metpy.y, rtma_rh *100, 
            transform=rtma_rh.metpy.cartopy_crs,
-           levels=np.arange(0, 16, 1), cmap='YlOrBr', alpha=0.3, zorder=2)
+           levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=0.9, zorder=2)
 
 cs1 = ax.contourf(rtma_speed_mph.x, rtma_speed_mph.metpy.y, rtma_speed_mph,
                   transform=rtma_speed_mph.metpy.cartopy_crs,
-                  levels=np.arange(25, 75, 5), cmap='winter', alpha=0.3, zorder=1)
+                  levels=np.arange(25, 75, 5), cmap='winter', alpha=0.5, zorder=1)
 
 # Plots METAR
 stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
