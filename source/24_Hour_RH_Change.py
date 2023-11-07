@@ -96,7 +96,7 @@ if len(rtma_rh_diff) != 0:
     
     cs = ax.contourf(rtma_rh_diff.metpy.x, rtma_rh_diff.y, rtma_rh_diff *100, 
                      transform=rtma_rh_diff.metpy.cartopy_crs,
-                     levels=np.arange(-50, 50, 5), cmap='BrBG')
+                     levels=np.arange(-50, 55, 5), cmap='BrBG')
     cbar_RH = fig.colorbar(cs)
     cbar_RH.set_label(label="24-Hour Relative Humidity Change (%)", size=12, fontweight='bold')
     plt.text(0.5, -0.045, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
