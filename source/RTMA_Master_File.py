@@ -439,13 +439,8 @@ else:
     plt.text(0.2, 0.5, "No Data for " + date.strftime('%m/%d/%Y %HZ'), fontsize=20, fontweight='bold')
     plt.text(0.5, 0, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
        verticalalignment='bottom', transform=ax.transAxes)   
-plt.title("2.5km Real Time Mesoscale Analysis: Low RH(<=15%)\nMETAR Wind Speed - Red (kts)/RH - Green (%)\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
-plt.axis('off') 
-
-
-
-
-
+    plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+    plt.axis('off') 
 
 #########################################################################################
 # RTMA RFW BASED ON WIND SPEED
