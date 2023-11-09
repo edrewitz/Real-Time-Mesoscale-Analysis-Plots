@@ -403,6 +403,50 @@ else:
 plt.title("2.5km Real Time Mesoscale Analysis: Low RH(<=15%)\nMETAR Wind Speed - Red (kts)/RH - Green (%)\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
 plt.axis('off') 
 
+
+######################################################################
+# METAR AND RTMA RH LOW (RH <= 15%) AND HIGH (RH >= 80%)
+######################################################################
+
+fig_LOW_AND_HIGH_RH_AREAS = plt.figure(figsize=(7,7))
+if len(rtma_rh) != 0:
+    ax = fig_LOW_AND_HIGH_RH_AREAS.add_subplot(1, 1, 1, projection=plot_proj_RH)
+    ax.set_extent((-122, -114, 31, 39), crs=ccrs.PlateCarree())
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+    ax.add_feature(cfeature.STATES, linewidth=0.5)
+    ax.add_feature(USCOUNTIES, linewidth=0.5)
+    
+    # Plots RH
+    cs_low = ax.contourf(rtma_rh.x, rtma_rh.metpy.y, rtma_rh *100, 
+               transform=rtma_rh.metpy.cartopy_crs,
+               levels=np.arange(0, 16, 1), cmap='YlOrBr_r', alpha=1)
+
+    cs_high = ax.contourf(rtma_rh.x, rtma_rh.metpy.y, rtma_rh *100, 
+               transform=rtma_rh.metpy.cartopy_crs,
+               levels=np.arange(80, 101, 1), cmap='Greens', alpha=1)
+
+    plt.title("2.5km Real Time Mesoscale Analysis\nLow RH(<=15%) & High RH (RH >= 80%)\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+    ax.text(0.5, -0.065, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+    cbar_RH_low = fig_LOW_AND_HIGH_RH_AREAS.colorbar(cs_low, location='left', shrink=0.5, pad=0.03)
+    cbar_RH_low.set_label(label="Low RH (RH <= 15%)", size=12, fontweight='bold')
+
+    cbar_RH_high = fig_LOW_AND_HIGH_RH_AREAS.colorbar(cs_high, location='right', shrink=0.5, pad=0.03)
+    cbar_RH_high.set_label(label="High RH (RH >= 80%)", size=12, fontweight='bold')
+
+else:
+    plt.text(0.2, 0.5, "No Data for " + date.strftime('%m/%d/%Y %HZ'), fontsize=20, fontweight='bold')
+    plt.text(0.5, 0, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax.transAxes)   
+plt.title("2.5km Real Time Mesoscale Analysis: Low RH(<=15%)\nMETAR Wind Speed - Red (kts)/RH - Green (%)\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+plt.axis('off') 
+
+
+
+
+
+
 #########################################################################################
 # RTMA RFW BASED ON WIND SPEED
 #########################################################################################
@@ -794,3 +838,4 @@ fig_RFW_GUST_CENTRAL.savefig(f"Weather Data/RTMA Red Flag Criteria Based on Wind
 fig_RFW_GUST_SOUTH.savefig(f"Weather Data/RTMA Red Flag Criteria Based on Wind Gust South")
 fig_TEMP_ERROR.savefig(f"Weather Data/RTMA Temperature Error")
 fig_DWPT_ERROR.savefig(f"Weather Data/Dewpoint Temperature Error")
+fig_LOW_AND_HIGH_RH_AREAS.savefig(f"Weather Data/Areas of Low and High RH")
