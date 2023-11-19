@@ -324,7 +324,7 @@ if len(rtma_rh) != 0:
     # Plots RH
     cs = ax.contourf(rtma_rh.metpy.x, rtma_rh.metpy.y, rtma_rh *100, 
                transform=rtma_rh.metpy.cartopy_crs,
-               levels=np.arange(0, 150, 5), cmap='YlGnBu', alpha=0.5)
+               levels=np.arange(0, 105, 5), cmap='YlGnBu', alpha=0.5)
     
     # Plots METAR
     stn = mpplots.StationPlot(ax, sfc_data['longitude'][sfc_data_mask].m, sfc_data['latitude'][sfc_data_mask].m,
