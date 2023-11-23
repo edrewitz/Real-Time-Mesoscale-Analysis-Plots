@@ -216,8 +216,12 @@ airports_df = pd.read_csv(get_test_data('airport-codes.csv'))
 airports_df = airports_df[(airports_df['type'] == 'large_airport') | (airports_df['type'] == 'medium_airport') | (airports_df['type'] == 'small_airport')]
 
 # Accesses the METAR data
-metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+try:
+    metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
 
+except Exception as e:
+    metar_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
+    
 # Opens METAR file
 metar_file = metar_cat.datasets.filter_time_nearest(dt1).remote_open()
 
