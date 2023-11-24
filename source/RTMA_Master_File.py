@@ -140,9 +140,9 @@ def TEMP_data(rtma_temp, rtma_temp_24):
     if logic.any() == True:       
         return pd.DataFrame()
     if logic.any() == False:
-        return diff
+        return diff, degF
 
-rtma_TEMP_diff = TEMP_data(rtma_temp, rtma_temp_24)
+rtma_TEMP_diff, temp_f = TEMP_data(rtma_temp, rtma_temp_24)
 
 # Converts Dewpoint to F
 def DWPT_ERROR_data(rtma_dwpt_error, rtma_dwpt_24_error):
@@ -202,6 +202,11 @@ else:
 
 if len(dwpt_error) != 0:
     plot_proj_dwpt_error = dwpt_error.metpy.cartopy_crs
+else:
+    pass
+
+if len(rtma_temp) != 0:
+    plot_proj_temp = temp_f.metpy.cartopy_crs
 else:
     pass
     
@@ -818,6 +823,38 @@ if len(rtma_rh) != 0:
 
 else:
     pass
+
+######################################################################################################
+# RTMA FROST & FREEZE
+######################################################################################################
+
+fig_FROST_FREEZE = plt.figure(figsize=(10,10))
+plt.title("2.5km Real Time Mesoscale Analysis: Frost & Freeze\nTemperature <= 32F Shaded\nValid: " + dt1.strftime('%m/%d/%Y %HZ') + "\nImage Created: " + date.strftime('%m/%d/%Y %H:%MZ'), fontweight='bold')
+plt.axis('off')
+
+if len(rtma_temp) != 0:
+    ax = fig_FROST_FREEZE.add_subplot(1, 1, 1, projection=plot_proj_temp)
+    ax.set_extent((-122, -114, 31, 39), crs=ccrs.PlateCarree())
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+    ax.add_feature(cfeature.STATES, linewidth=0.5)
+    ax.add_feature(USCOUNTIES, linewidth=0.5)
+    
+    # Plots RH
+    cs = ax.contourf(temp_f.x, temp_f.metpy.y, temp_f, 
+               transform=temp_f.metpy.cartopy_crs,
+               levels=np.arange(0, 33, 1), cmap='cool_r', alpha=1)
+    
+    cbar_temp = fig_FROST_FREEZE.colorbar(cs)
+    cbar_temp.set_label(label="Temperature \N{DEGREE SIGN}F", size=12, fontweight='bold')
+    ax.text(0.5, -0.045, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontweight='bold', horizontalalignment='center',
+           verticalalignment='bottom', transform=ax.transAxes)
+
+else:
+    plt.text(0.2, 0.5, "No Data for " + date.strftime('%m/%d/%Y %HZ'), fontsize=20, fontweight='bold')
+    plt.text(0.5, 0, "Developed by Eric Drewitz - Powered by MetPy\nData Source: thredds.ucar.edu", fontsize=14, fontweight='bold', horizontalalignment='center',
+       verticalalignment='bottom', transform=ax.transAxes)   
+    
+
 ######################################################################################################
 # RTMA TEMPERATURE ERROR
 ######################################################################################################
@@ -925,3 +962,4 @@ fig_DWPT_ERROR.savefig(f"Weather Data/Dewpoint Temperature Error")
 fig_LOW_AND_HIGH_RH_AREAS.savefig(f"Weather Data/Areas of Low and High RH")
 fig_RFW_WIND_NO_METAR.savefig(f"Weather Data/RTMA Red Flag Criteria Based on Wind Speed NO METARs")
 fig_RFW_GUST_NO_METAR.savefig(f"Weather Data/RTMA Red Flag Criteria Based on Gusts NO METARs")
+fig_FROST_FREEZE.savefig(f"Weather Data/RTMA Frost and Freeze")
